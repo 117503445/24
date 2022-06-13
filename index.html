@@ -127,7 +127,7 @@
                 let isWin = checkInput(exp,randNum[0]);
                 winMessage3.innerText = "The numbers were: " + randNum[0]+"\n\nYour expression was: " + exp;
                 if (isWin){gameTime = Math.round(tnow+1)/100;}
-                winMessage3.innerText += "\n\nA solution is "+randNum[1];
+                else winMessage3.innerText += "\n\nA solution is "+randNum[1];
                 endGame(isWin);
             }
         }
