@@ -4,14 +4,28 @@
     <meta charset="UTF-8">
     <title>24 Game</title>
 </head>
-<body id="body">
-    <p>Streak: <span id="streak"></span></p>
-    <p>Highest streak: <span id="highStreak"></span></p>
-    <p>Number of wins: <span id="wins"></span></p>
-    <p>Number of losses: <span id="loss"></span></p>
-    <p>Percent win: <span id="percent"></span></p>
-    <p>Average Time: <span id="avgTime"></span></p>
-    <button id="reset">Reset Scores</button>
+<body id="body" style="background:beige">
+    <div style="display: flex;flex-wrap: nowrap;">
+        <div style="background-color:bisque;width: 170px;margin: 10px;border: 2px solid black;padding: 10px;">
+            <p>Streak: <span id="streak"></span></p>
+            <p>Highest streak: <span id="highStreak"></span></p>
+            <p>Number of wins: <span id="wins"></span></p>
+            <p>Number of losses: <span id="loss"></span></p>
+            <p>Percent win: <span id="percent"></span></p>
+            <p>Average Time: <span id="avgTime"></span></p>
+        </div>
+        <div style="margin-left: 20px;margin-top: 20px;">
+        <div style="font-family: cursive;font-size: 50px;color:aqua;text-shadow: 4px 4px grey;">24 Game</div>
+        <p></p>
+        <p>Object of the game:</p>
+        <p>Make the number 24 from the four numbers shown. You can add, subtract, multiply and divide. Use all four numbers on the card, but use each number only once. You do not have to use all four operations.</p>
+        <p>Example: 4*2*(4-1)</p>
+        </div>
+    </div>
+        <div style="display: flex;flex-wrap: nowrap;">
+        <button id="reset" style="margin: 10px;">Reset Scores</button>
+        <div id="timer" style="margin: 10px;"></div>
+    </div>
     <p></p>
     <button id="getNums" style="font-size: 40px; cursor: pointer;">Get Numbers</button>
     <p id="myform" name="myform" style="visibility: hidden;">
@@ -27,9 +41,7 @@
 </body>
 
 <style>
-    .myform{
-        visibility: hidden;
-    }
+    
 </style>
 
 <script>
@@ -47,6 +59,7 @@
     const winMessage4 = document.getElementById('winMessage4');
     const numbers = document.getElementById('numbers');
     const reset = document.getElementById('reset');
+    const timer = document.getElementById('timer');
     const giveUp = document.getElementById('giveUp');
     //let isWin = false;
 
@@ -67,20 +80,29 @@
     getNums.addEventListener('click', startGame);
 
     function startGame(){
-        loseTimeout = setTimeout(endGame,30000,false);
-        myinterval = setInterval(timer,1000);
+        loseTimeout = setTimeout(timeout,300000);
+        function timeout(){
+            clearInterval(myinterval);
+            endGame(false);
+        }
+        myinterval = setInterval(timerFunc,10);
         let tnow = 0;
-        winMessage.innerText = tnow+" sec";
-        function timer(){
+        timer.innerText = "00:00:00";
+        function timerFunc(){
             tnow++;
-            winMessage.innerText = tnow+" sec";
+            let tmsec = tnow%100;
+            let tsec = parseInt(tnow/100);
+            let tmin = parseInt(tnow/6000);
+            timer.innerText = tmin<10 ? "0"+tmin : tmin;
+            timer.innerText += tsec<10 ? ":0"+tsec : ":"+tsec;
+            timer.innerText += tmsec<10 ? ":0"+tmsec : ":"+tmsec;
         }
         getNums.removeEventListener('click',startGame);
         getNums.style.cursor = "not-allowed";
         myform.style.visibility = "visible";
         document.getElementById("textfield").focus();
         document.getElementById('textfield').value = '';
-        //winMessage.innerText = "";
+        winMessage.innerText = "";
         winMessage2.innerText = "";
         winMessage3.innerText = "";
         winMessage4.innerText = "";
@@ -88,7 +110,6 @@
         let randNum = getNumsWorks();
         //numbers.innerText = randNum;
         numbers.innerText = String(randNum[0][0]) + ", " + String(randNum[0][1]) + ", " + String(randNum[0][2]) + ", " + String(randNum[0][3]);
-        const t0 = performance.now();
 
         giveUp.addEventListener('click',function(){
             clearTimeout(loseTimeout);
@@ -104,10 +125,7 @@
                 var exp = document.getElementById('textfield').value;
                 let isWin = checkInput(exp,randNum[0]);
                 winMessage3.innerText = "The numbers were: " + randNum[0]+"\n\nYour expression was: " + exp;
-                if (isWin){
-                    const t1 = performance.now();
-                    gameTime = Math.round((t1-t0)/10)/100;
-                }
+                if (isWin){gameTime = Math.round(tnow+1)/100;}
                 winMessage3.innerText += "\n\nA solution is "+randNum[1];
                 endGame(isWin);
             }
@@ -214,8 +232,11 @@
         numbers.innerText = "";
         getNums.addEventListener('click', startGame);
         /*winMessage4.innerText = "Press 'Enter' to start a new game.";
-        let enterPress = (e) => {if (e.key === 'Enter') startGame;}
-        document.addEventListener('keypress',enterPress);*/
+        setTimeout(enterFunc,10);
+        function enterFunc(){
+            let enterPress = (e) => {if (e.key === 'Enter') startGame();}
+            document.addEventListener('keypress',enterPress);
+        }*/
     }
     
     reset.addEventListener('click', resetScores);
