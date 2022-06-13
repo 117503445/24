@@ -6,13 +6,13 @@
 </head>
 <body id="body" style="background:beige">
     <div style="display: flex;flex-wrap: nowrap;">
-        <div style="background-color:bisque;width: 170px;margin: 10px;border: 2px solid black;padding: 10px;font-weight: bold;">
+        <div style="background-color:bisque;width: 180px;margin: 10px;border: 2px solid black;padding: 10px;font-weight: bold;">
             <p>Streak: <span id="streak" style="font-weight: normal;"></span></p>
             <p>Highest streak: <span id="highStreak" style="font-weight: normal;"></span></p>
             <p>Number of wins: <span id="wins" style="font-weight: normal;"></span></p>
             <p>Number of losses: <span id="loss" style="font-weight: normal;"></span></p>
             <p>Percent win: <span id="percent" style="font-weight: normal;"></span></p>
-            <p>Average Time: <span id="avgTime" style="font-weight: normal;"></span></p>
+            <p>Average Time (sec): <span id="avgTime" style="font-weight: normal;"></span></p>
         </div>
         <div style="margin-left: 50px;margin-top: 20px;">
         <div style="margin-left: 200px;font-family: cursive;font-size: 50px;color:aqua;text-shadow: 4px 4px grey;">24 Game</div>
@@ -92,7 +92,7 @@
         function timerFunc(){
             tnow++;
             let tmsec = tnow%100;
-            let tsec = parseInt(tnow/100);
+            let tsec = parseInt(tnow/100)%60;
             let tmin = parseInt(tnow/6000);
             timer.innerText = tmin<10 ? "0"+tmin : tmin;
             timer.innerText += tsec<10 ? ":0"+tsec : ":"+tsec;
@@ -216,7 +216,8 @@
             if (winMessage2.innerText == "") winMessage2.innerText = "Gave Up.";
         }
         else {
-            winMessage.innerText = "You Win! Time: "+gameTime;
+            winMessage.innerText = "You Win! Time:";
+            winMessage.innerText += gameTime<60 ? " "+gameTime+" sec" : " "+parseInt(gameTime/60)+" min "+gameTime%60+" sec";
             localStorage.setItem("winsNum", Number(localStorage.getItem("winsNum"))+1);
             wins.innerText = localStorage.getItem("winsNum");
             localStorage.setItem("streakNum", Number(localStorage.getItem("streakNum"))+1);
