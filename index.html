@@ -114,14 +114,14 @@
         //numbers.innerText = randNum;
         numbers.innerText = String(randNum[0][0]) + ", " + String(randNum[0][1]) + ", " + String(randNum[0][2]) + ", " + String(randNum[0][3]);
 
-        giveUp.addEventListener('click',function(){
+        giveUp.onclick = function(){
             clearTimeout(loseTimeout);
             clearInterval(myinterval);
             winMessage3.innerText = "The numbers were: " + randNum[0]+"\n\nA solution is "+randNum[1];
             endGame(false);
-        },{once: true});
+        };
 
-        Enter.addEventListener('click',function(){
+        Enter.onclick = function(){
             clearTimeout(loseTimeout);
             clearInterval(myinterval);
             var exp = document.getElementById('textfield').value;
@@ -130,7 +130,7 @@
             if (isWin){gameTime = Math.round(tnow+1)/100;}
             else winMessage3.innerText += "\n\nA solution is "+randNum[1];
             endGame(isWin);
-        },{once: true});
+        };
 
         let enterPressed = (e) => {
             if (e.key === 'Enter'){
