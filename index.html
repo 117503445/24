@@ -8,19 +8,19 @@
     <div style="display: flex;flex-wrap: nowrap;">
         <div style="background-color:bisque;width: 180px;margin: 10px;border: 2px solid black;padding: 10px;font-weight: bold;">
             <p>Streak: <span id="streak" style="font-weight: normal;"></span></p>
-            <p>Highest streak: <span id="highStreak" style="font-weight: normal;"></span></p>
-            <p>Number of wins: <span id="wins" style="font-weight: normal;"></span></p>
-            <p>Number of losses: <span id="loss" style="font-weight: normal;"></span></p>
+            <p>Highest streak:  <span id="highStreak" style="font-weight: normal;"></span></p>
+            <p>Number of wins:  <span id="wins" style="font-weight: normal;"></span></p>
+            <p>Number of losses:    <span id="loss" style="font-weight: normal;"></span></p>
             <p>Percent win: <span id="percent" style="font-weight: normal;"></span></p>
-            <p>Average Time (sec): <span id="avgTime" style="font-weight: normal;"></span></p>
+            <p>Average Time (sec):  <span id="avgTime" style="font-weight: normal;"></span></p>
         </div>
         <div style="margin-left: 50px;margin-top: 20px;">
-        <div style="margin-left: 200px;font-family: cursive;font-size: 50px;color:aqua;text-shadow: 4px 4px grey;">24 Game</div>
-        <p></p>
-        <p style="font-weight: bold;margin-top: 50px;margin-bottom: -5px;">Object of the game:</p>
-        <p>Make the number 24 from the four numbers shown. You can add, subtract, multiply and divide. Use</p>
-        <p style="margin-top: -10px;margin-bottom: 30px;">all four numbers given, but use each number only once. You do not have to use all four operations.</p>
-        <p><span style="font-weight: bold;">Example:</span> 4*2*(4-1)</p>
+            <div style="margin-left: 200px;font-family: cursive;font-size: 50px;color:aqua;text-shadow: 4px 4px grey;">24 Game</div>
+            <p></p>
+            <p style="font-weight: bold;margin-top: 50px;margin-bottom: -5px;">Object of the game:</p>
+            <p>Make the number 24 from the four numbers shown. You can add, subtract, multiply and divide. Use</p>
+            <p style="margin-top: -10px;margin-bottom: 30px;">all four numbers given, but use each number only once. You do not have to use all four operations.</p>
+            <p><span style="font-weight: bold;">Example:</span> 4*2*(4-1)</p>
         </div>
     </div>
         <div style="display: flex;flex-wrap: nowrap;margin-top: 20px;margin-bottom: 20px;">
@@ -32,7 +32,8 @@
     <p id="myform" name="myform" style="visibility: hidden;">
         <label style="font-size: 40px;">Get 24 out of: <span id="numbers"></span></label>
         <input type="text" id="textfield" style="height:30px;">
-        <button id="giveUp" style="font-size: 18px; height: 34px;">Give Up</button>
+        <button id="Enter" style="font-size: 18px; height: 34px;">Enter</button>
+        <button id="giveUp" style="font-size: 18px; height: 34px;margin-left: 5px;">Give Up</button>
     </p>
     <p id="winMessage" style="font-weight: bold;font-size: 30px;margin-top: -30px;margin-bottom: -5px;"></p>
     <p id="winMessage2"></p>
@@ -62,6 +63,7 @@
     const reset = document.getElementById('reset');
     const timer = document.getElementById('timer');
     const giveUp = document.getElementById('giveUp');
+    const Enter = document.getElementById('Enter');
     //let isWin = false;
 
     if (localStorage.getItem("streakNum")==null) localStorage.setItem("streakNum",0);
@@ -117,6 +119,17 @@
             clearInterval(myinterval);
             winMessage3.innerText = "The numbers were: " + randNum[0]+"\n\nA solution is "+randNum[1];
             endGame(false);
+        },{once: true});
+
+        Enter.addEventListener('click',function(){
+            clearTimeout(loseTimeout);
+            clearInterval(myinterval);
+            var exp = document.getElementById('textfield').value;
+            let isWin = checkInput(exp,randNum[0]);
+            winMessage3.innerText = "The numbers were: " + randNum[0]+"\n\nYour expression was: " + exp;
+            if (isWin){gameTime = Math.round(tnow+1)/100;}
+            else winMessage3.innerText += "\n\nA solution is "+randNum[1];
+            endGame(isWin);
         },{once: true});
 
         let enterPressed = (e) => {
