@@ -124,7 +124,11 @@
         Enter.onclick = function(){
             clearTimeout(loseTimeout);
             clearInterval(myinterval);
-            var exp = document.getElementById('textfield').value;
+            var realexp = document.getElementById('textfield').value;
+            var exp = '';
+            for (let i = 0;i < realexp.length;i++){
+                if (realexp[i] != ' ') exp += realexp[i];
+            }
             let isWin = checkInput(exp,randNum[0]);
             winMessage3.innerText = "The numbers were: " + randNum[0]+"\n\nYour expression was: " + exp;
             if (isWin){gameTime = Math.round(tnow+1)/100;}
