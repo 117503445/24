@@ -124,11 +124,7 @@
         Enter.onclick = function(){
             clearTimeout(loseTimeout);
             clearInterval(myinterval);
-            var realexp = document.getElementById('textfield').value;
-            var exp = '';
-            for (let i = 0;i < realexp.length;i++){
-                if (realexp[i] != ' ') exp += realexp[i];
-            }
+            var exp = document.getElementById('textfield').value;
             let isWin = checkInput(exp,randNum[0]);
             winMessage3.innerText = "The numbers were: " + randNum[0]+"\n\nYour expression was: " + exp;
             if (isWin){gameTime = Math.round(tnow+1)/100;}
@@ -202,10 +198,14 @@
         }
         return [randNum, solution];
     }
-    function checkInput(exp,nums){
+    function checkInput(realexp,nums){
         let numBrac = 0;
         let numCheck = [0,0,0,0];
         let operations = ['+','-','*','/'];
+        var exp = '';
+        for (let i = 0;i < realexp.length;i++){
+            if (realexp[i] != ' ') exp += realexp[i];
+        }
         for (let i = 0;i < exp.length;i++){
             if (exp[i] == '(') numBrac++;
             else if (exp[i] == ')') numBrac--;
@@ -250,12 +250,9 @@
         percent.innerText = localStorage.getItem("percentNum");
         numbers.innerText = "";
         getNums.addEventListener('click', startGame);
-        /*winMessage4.innerText = "Press 'Enter' to start a new game.";
-        setTimeout(enterFunc,10);
-        function enterFunc(){
-            let enterPress = (e) => {if (e.key === 'Enter') startGame();}
-            document.addEventListener('keypress',enterPress);
-        }*/
+        /*winMessage4.innerText = "Press 'Space' to start a new game.";
+        let enterPress = (e) => {if (e.key === " ") startGame();}
+        document.addEventListener('keypress',enterPress,{once: true});*/
     }
     
     reset.addEventListener('click', resetScores);
